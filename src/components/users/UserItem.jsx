@@ -1,4 +1,3 @@
-import avatar from "daisyui/components/avatar";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 
@@ -17,7 +16,7 @@ function UserItem({ user: { login, avatar_url } }) {
           <h2 className="card-title">{login}</h2>
           <Link
             className="text-base-content text-opacity-40"
-            to={`/users/${login}`}
+            to={`/user/${login}`}
           >
             Visit Profile
           </Link>
