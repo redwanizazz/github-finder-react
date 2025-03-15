@@ -1,17 +1,19 @@
-import { FaCodePen, FaStore, FaUserFriends, FaUsers } from "react-icons/fa";
+import { FaCode, FaStore, FaUserFriends, FaUsers } from "react-icons/fa";
 import { useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import Spinner from "../components/layout/Spinner";
 import GithubContext from "../context/github/GithubContext";
+import RepoList from "../components/repos/RepoList";
 
 function User() {
-  const { getUser, user, loading } = useContext(GithubContext);
+  const { getUser, getRepos, user, repos, loading } = useContext(GithubContext);
 
   const params = useParams();
 
   useEffect(() => {
-    getUser(params.login);
+    getUser(params.login); // Fetch the user details
+    getRepos(params.login); // Fetch the user repositories
   }, []);
 
   const {
@@ -78,8 +80,101 @@ function User() {
                 </a>
               </div>
             </div>
+
+            <div className="w-full rounded-lg shadow-md bg-base-100 stats">
+              {location && (
+                <div className="stat">
+                  <div className="stat-title text-md">Location</div>
+                  <div className="text-lg stat-value">{location}</div>
+                </div>
+              )}
+
+              {blog && (
+                <div className="stat">
+                  <div className="stat-title text-md">Website</div>
+                  <div className="text-lg stat-value">
+                    <a
+                      href={`https://${blog}`}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      {blog}
+                    </a>
+                  </div>
+                </div>
+              )}
+
+              {twitter_username && (
+                <div className="stat">
+                  <div className="stat-title text-md">Website</div>
+                  <div className="text-lg stat-value">
+                    <a
+                      href={`https://twitter.com/${twitter_username}`}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      {twitter_username}
+                    </a>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </div>
+
+        <div className="w-full py-6 mb-8 rounded-lg shadow-lg bg-base-100 stats">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="stat place-items-center">
+              <div className="stat-figure text-primary">
+                <FaUsers className="text-4xl md:text-6xl transition-transform transform hover:scale-110" />
+              </div>
+              <div className="stat-title text-lg font-semibold text-gray-300">
+                Followers
+              </div>
+              <div className="stat-value text-4xl md:text-5xl font-bold text-white">
+                {followers}
+              </div>
+            </div>
+
+            <div className="stat place-items-center">
+              <div className="stat-figure text-primary">
+                <FaUserFriends className="text-4xl md:text-6xl transition-transform transform hover:scale-110" />
+              </div>
+              <div className="stat-title text-lg font-semibold text-gray-300">
+                Following
+              </div>
+              <div className="stat-value text-4xl md:text-5xl font-bold text-white">
+                {following}
+              </div>
+            </div>
+
+            <div className="stat place-items-center">
+              <div className="stat-figure text-primary">
+                <FaCode className="text-4xl md:text-6xl transition-transform transform hover:scale-110" />
+              </div>
+              <div className="stat-title text-lg font-semibold text-gray-300">
+                Public Repos
+              </div>
+              <div className="stat-value text-4xl md:text-5xl font-bold text-white">
+                {public_repos}
+              </div>
+            </div>
+
+            <div className="stat place-items-center">
+              <div className="stat-figure text-primary">
+                <FaStore className="text-4xl md:text-6xl transition-transform transform hover:scale-110" />
+              </div>
+              <div className="stat-title text-lg font-semibold text-gray-300">
+                Public Gists
+              </div>
+              <div className="stat-value text-4xl md:text-5xl font-bold text-white">
+                {public_gists}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <RepoList repos={repos} /> 
       </div>
     </>
   );
